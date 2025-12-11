@@ -1,6 +1,7 @@
 #include "cell.h"
 #include <stddef.h>
 #include <string.h>
+#include <stdlib.h>
 
 struct Cell {
     size_t bomb_neighbors;
@@ -28,7 +29,11 @@ Cell* get_n_element_in_cell_array(Cell* cell_array, size_t n) {
 }
 
 bool is_exploded(Cell* c) {
-    return c->is_bomb && c->is_revealed;
+    return is_bomb(c) && is_revealed(c);
+}
+
+bool is_revealed(Cell* c) {
+    return c->is_revealed;
 }
 
 void set_revealed(Cell* c) {
@@ -41,11 +46,19 @@ void set_flaged(Cell* c) {
         c->is_flaged = true;
 }
 
+bool is_bomb(Cell* c) {
+    return c->is_bomb;
+}
+
 void set_bomb(Cell* c) {
     c->is_bomb = true;
 }
 
 void set_bomb_neighbours_count(Cell* c, size_t neighbours) {
     c->bomb_neighbors = neighbours;
+}
+
+size_t get_bomb_neighbours_count(Cell* c) {
+    return c->bomb_neighbors;
 }
 

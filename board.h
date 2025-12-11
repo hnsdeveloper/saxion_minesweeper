@@ -2,7 +2,9 @@
 #define _BOARD_H_
 
 #include <stddef.h>
+#include <stdbool.h>
 #include "action.h"
+
 
 typedef struct Board Board;
 
@@ -21,14 +23,19 @@ void destroy_board(Board* board);
 void draw_board(Board* board);
 
 /// @brief Applies an action to the board.
-/// @param action The action to be applied.
 /// @param board The board to where the action will be applied.
-void apply_action_on_board(Action* action, Board* board);
+/// @param action The action to be applied.
+void apply_action_on_board(Board* board, Action* action);
 
 /// @brief Checks if a loosing condition has been reached.
 /// @param board The board to which it will be checked.
 /// @return True if a loosing condition has been reached, otherwise false.
 bool is_loose_condition(Board* board);
+
+/// @brief Check if a winning condition has been reached.
+/// @param board The board to which it will be checked.
+/// @return True if a winning condition has been reached, otherwise false.
+bool is_win_condition(Board* board);
 
 
 #endif
