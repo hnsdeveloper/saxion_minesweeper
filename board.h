@@ -25,6 +25,9 @@ void draw_board(Board* board);
 /// @param board The board to where the action will be applied.
 void apply_action_on_board(Action* action, Board* board);
 
+/// @brief Checks if a loosing condition has been reached.
+/// @param board The board to which it will be checked.
+/// @return True if a loosing condition has been reached, otherwise false.
 bool is_loose_condition(Board* board);
 
 
