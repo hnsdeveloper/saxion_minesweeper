@@ -4,13 +4,16 @@
 #include <stdlib.h>
 
 int main() {
-  printf("Welcome to Minesweeper.\n");
-  printf("The game will show you a grid with cells.\n");
-  printf("On each of these cells there might be a bomb or not. Through console "
+  printf("Welcome to Minesweeper.\n"
+         "The game will show you a grid with cells.\n"
+         "On each of these cells there might be a bomb or not. Through console "
          "input you will decide\non actions (revealing a cell or flagging it). "
-         "Revealing might reveal adjacent cells.\n");
-  printf("Cells revealed will show the an R or the number of neighbor bombs. "
-         "Cells not revealed will contain nothing.\nGood luck!\n");
+         "Revealing might reveal adjacent cells.\n"
+         "Cells revealed will show the an R or the number of neighbor bombs. "
+         "Cells not revealed will contain nothing.\n"
+         "Attempting to flag an already revealed cell produces no effect\n"
+         "To win, either reveal all the cells that contain no bombs or flag "
+         "all bombs.\nGood luck!\n");
 
   while (true) {
     printf("Please, provide a width to play (0 will end the game) : ");
@@ -63,7 +66,7 @@ int main() {
     if (is_win_condition(b)) {
       printf("Congrats, you won this match!\n");
     } else {
-      printf("Oh, so sad :(. You lost. Better luck next time.\n)");
+      printf("Oh, so sad :(. You lost. Better luck next time.\n");
     }
 
     destroy_board(b);

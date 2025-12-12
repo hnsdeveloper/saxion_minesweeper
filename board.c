@@ -226,6 +226,7 @@ size_t get_board_width(Board *board) { return board->width; }
 
 size_t get_board_height(Board *board) { return board->height; }
 
+#ifdef MINESWEEPER_DEBUG
 void draw_board_debug(Board *board) {
   for (size_t i = 0; i < board->height; ++i) {
     if (i == 0) {
@@ -264,3 +265,4 @@ void draw_board_debug(Board *board) {
   printf("\nBomb count: %zu", board->bomb_count);
   printf("\n");
 }
+#endif

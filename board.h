@@ -46,8 +46,8 @@ size_t get_board_width(Board *board);
 /// @return The board height
 size_t get_board_height(Board *board);
 
-void print_revealed_count(Board *board);
-
-void draw_board_debug(Board *board);
+#ifdef MINESWEEPER_DEBUG
+    void draw_board_debug(Board *board);
+#endif
 
 #endif

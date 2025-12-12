@@ -2,6 +2,7 @@
 #define _ACTION_H_
 
 #include "coordinate.h"
+#include <stdbool.h>
 
 typedef struct Action Action;
 
