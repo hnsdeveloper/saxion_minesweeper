@@ -184,6 +184,9 @@ void destroy_board(Board *board) {
 }
 
 void draw_board(Board *board) {
+  printf("\nBomb count: %zu.\n", board->bomb_count);
+  printf("Flagged bombs: %zu.\n", board->correctly_flagged_bombs);
+
   for (size_t i = 0; i < board->height; ++i) {
     if (i == 0) {
       for (size_t j = 0; j < board->width; ++j) {
