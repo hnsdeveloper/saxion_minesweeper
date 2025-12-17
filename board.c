@@ -38,8 +38,8 @@ Board *create_board(size_t x, size_t y) {
 
 size_t reveal_recursive(Board *board, size_t x, size_t y, bool first) {
   // So we have 8 neighbors, we must check them all if they can be revealed
+  size_t idx = board->width * y + x;
 
-  size_t idx = board->height * y + x;
   Cell *self = get_n_element_in_cell_array(board->board_layout, idx);
   if ((is_revealed(self) && !first)) {
     return 0;
@@ -58,19 +58,19 @@ size_t reveal_recursive(Board *board, size_t x, size_t y, bool first) {
   for (size_t i = 0; i < end - begin + 1; ++i) {
     // Top ones
     if (y > 0) {
-      size_t top_idx = (y - 1) * board->height + begin + i;
+      size_t top_idx = (y - 1) * board->width + begin + i;
       Cell *c = get_n_element_in_cell_array(board->board_layout, top_idx);
       bomb_neighbors_count += is_bomb(c) ? 1 : 0;
     }
     // Same row, excluding self
     if (begin + i != x) {
-      size_t same_line_idx = y * board->height + begin + i;
+      size_t same_line_idx = y * board->width + begin + i;
       Cell *c = get_n_element_in_cell_array(board->board_layout, same_line_idx);
       bomb_neighbors_count += is_bomb(c) ? 1 : 0;
     }
     // Bottom ones
     if (y < board->height - 1) {
-      size_t bottom_idx = (y + 1) * board->height + begin + i;
+      size_t bottom_idx = (y + 1) * board->width + begin + i;
       Cell *c = get_n_element_in_cell_array(board->board_layout, bottom_idx);
       bomb_neighbors_count += is_bomb(c) ? 1 : 0;
     }
@@ -114,11 +114,11 @@ void fill_board(Board *board, Action *action) {
   size_t bomb_count = 0;
   for (size_t i = 0; i < board->height; ++i) {
     for (size_t j = 0; j < board->width; ++j) {
-      Cell *c = get_n_element_in_cell_array(board->board_layout,
-                                            board->height * i + j);
-      if (action_get_y(action) - 1 == i && action_get_x(action) - 1 == j) {
+      if (action_get_y(action) == i && action_get_x(action) == j) {
         continue;
       }
+      Cell *c = get_n_element_in_cell_array(board->board_layout,
+                                            board->width * i + j);
       int r = rand();
       if (r % 3 == 0) {
         set_bomb(c);
@@ -139,9 +139,9 @@ void apply_action_on_board(Board *board, Action *action) {
     fill_board(board, action);
   }
 
-  size_t x = action_get_x(action) - 1;
-  size_t y = action_get_y(action) - 1;
-  size_t idx = board->height * y + x;
+  size_t x = action_get_x(action);
+  size_t y = action_get_y(action);
+  size_t idx = board->width * y + x;
   Cell *selected_cell = get_n_element_in_cell_array(board->board_layout, idx);
 
   if (is_reveal(action)) {
@@ -198,7 +198,7 @@ void draw_board(Board *board) {
         printf("\n%4zu ", i + 1);
       }
 
-      size_t idx = i * board->height + j;
+      size_t idx = i * board->width + j;
       Cell *cell = get_n_element_in_cell_array(board->board_layout, idx);
       char c;
       if (is_revealed(cell)) {
@@ -242,7 +242,7 @@ void draw_board_debug(Board *board) {
         printf("\n%4zu ", i + 1);
       }
 
-      size_t idx = i * board->height + j;
+      size_t idx = i * board->width + j;
       Cell *cell = get_n_element_in_cell_array(board->board_layout, idx);
       char c;
 

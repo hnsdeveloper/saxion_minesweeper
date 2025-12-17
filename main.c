@@ -50,9 +50,9 @@ int main() {
 
       Action *act = NULL;
       if (((action[0] | 0x20) ^ 0x20) == 'R') {
-        act = create_reveal_action(create_coordinate(x, y));
+        act = create_reveal_action(create_coordinate(x - 1, y - 1));
       } else {
-        act = create_flag_action(create_coordinate(x, y));
+        act = create_flag_action(create_coordinate(x - 1, y - 1));
       }
 
       apply_action_on_board(b, act);
