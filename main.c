@@ -56,7 +56,7 @@ int main() {
       }
 
       apply_action_on_board(b, act);
-      free(act);
+      destroy_action(act);
 #ifdef MINESWEEPER_DEBUG
       draw_board_debug(b);
 #endif
