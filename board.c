@@ -1,25 +1,28 @@
 #include "board.h"
-#include "action.h"
-#include "cell.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
+#include "action.h"
+#include "cell.h"
+
 struct Board {
-  size_t width; // The width of the board.
-  size_t height; // The height of the board.
-  size_t bomb_count; // How many Cells are bombs in the board.
-  size_t correctly_flagged_bombs; // How many Cells have been correctly flagged as bombs.
-  size_t revealed_count; // How many Cells were revealed in total.
-  Cell *board_layout; // An array of Cells with size width * height.
-  bool is_lose; // Boolean stating whether there is a lose condition.
+  size_t width;                    // The width of the board.
+  size_t height;                   // The height of the board.
+  size_t bomb_count;               // How many Cells are bombs in the board.
+  size_t correctly_flagged_bombs;  // How many Cells have been correctly flagged
+                                   // as bombs.
+  size_t revealed_count;           // How many Cells were revealed in total.
+  Cell* board_layout;  // An array of Cells with size width * height.
+  bool is_lose;        // Boolean stating whether there is a lose condition.
 };
 
-Board *create_board(size_t x, size_t y) {
-  Board *p = malloc(x * y * sizeof(Board));
+Board* create_board(size_t x, size_t y) {
+  Board* p = malloc(x * y * sizeof(Board));
   if (p) {
-    Cell *c = create_cell_array(x * y);
+    Cell* c = create_cell_array(x * y);
     if (c != NULL) {
       p->width = x;
       p->height = y;
@@ -36,11 +39,11 @@ Board *create_board(size_t x, size_t y) {
   return NULL;
 }
 
-size_t reveal_recursive(Board *board, size_t x, size_t y, bool first) {
+size_t reveal_recursive(Board* board, size_t x, size_t y, bool first) {
   // So we have 8 neighbors, we must check them all if they can be revealed
   size_t idx = board->width * y + x;
 
-  Cell *self = get_n_element_in_cell_array(board->board_layout, idx);
+  Cell* self = get_n_element_in_cell_array(board->board_layout, idx);
   if ((is_revealed(self) && !first)) {
     return 0;
   }
@@ -59,19 +62,19 @@ size_t reveal_recursive(Board *board, size_t x, size_t y, bool first) {
     // Top ones
     if (y > 0) {
       size_t top_idx = (y - 1) * board->width + begin + i;
-      Cell *c = get_n_element_in_cell_array(board->board_layout, top_idx);
+      Cell* c = get_n_element_in_cell_array(board->board_layout, top_idx);
       bomb_neighbors_count += is_bomb(c) ? 1 : 0;
     }
     // Same row, excluding self
     if (begin + i != x) {
       size_t same_line_idx = y * board->width + begin + i;
-      Cell *c = get_n_element_in_cell_array(board->board_layout, same_line_idx);
+      Cell* c = get_n_element_in_cell_array(board->board_layout, same_line_idx);
       bomb_neighbors_count += is_bomb(c) ? 1 : 0;
     }
     // Bottom ones
     if (y < board->height - 1) {
       size_t bottom_idx = (y + 1) * board->width + begin + i;
-      Cell *c = get_n_element_in_cell_array(board->board_layout, bottom_idx);
+      Cell* c = get_n_element_in_cell_array(board->board_layout, bottom_idx);
       bomb_neighbors_count += is_bomb(c) ? 1 : 0;
     }
   }
@@ -103,7 +106,7 @@ size_t reveal_recursive(Board *board, size_t x, size_t y, bool first) {
 /// game over.
 /// @param board The board to be filled
 /// @param action The player action
-void fill_board(Board *board, Action *action) {
+void fill_board(Board* board, Action* action) {
   static bool is_seeded = false;
 
   if (!is_seeded) {
@@ -117,14 +120,17 @@ void fill_board(Board *board, Action *action) {
       if (action_get_y(action) == i && action_get_x(action) == j) {
         continue;
       }
-      Cell *c = get_n_element_in_cell_array(board->board_layout,
+      Cell* c = get_n_element_in_cell_array(board->board_layout,
                                             board->width * i + j);
       int r = rand();
-      // To be honest I know nothing of statistics and probability to make a fair distribution of bombs, 
-      // and thus create a fancy code which would allow the user to choose a difficulty.
-      // As such, I tested different parameters for when to place a bomb and found out that increasing the divisor
-      // caused less bombs to be spawned (it makes sense as if you choose a prime number, there will be less numbers
-      // that can be divided by it given the limited range of integers). 3 is a good amount, as 2 spawns to many bombs.
+      // To be honest I know nothing of statistics and probability to make a
+      // fair distribution of bombs, and thus create a fancy code which would
+      // allow the user to choose a difficulty. As such, I tested different
+      // parameters for when to place a bomb and found out that increasing the
+      // divisor caused less bombs to be spawned (it makes sense as if you
+      // choose a prime number, there will be less numbers that can be divided
+      // by it given the limited range of integers). 3 is a good amount, as 2
+      // spawns to many bombs.
       if (r % 3 == 0) {
         set_bomb(c);
         ++bomb_count;
@@ -135,7 +141,7 @@ void fill_board(Board *board, Action *action) {
   board->bomb_count = bomb_count;
 }
 
-void apply_action_on_board(Board *board, Action *action) {
+void apply_action_on_board(Board* board, Action* action) {
   // For when we initialize the board, its bomb count will be 0,
   // thus we keep looping until it is not zero anymore (or everything is filled
   // with bombs, as it wouldn't be possible to play).
@@ -147,7 +153,7 @@ void apply_action_on_board(Board *board, Action *action) {
   size_t x = action_get_x(action);
   size_t y = action_get_y(action);
   size_t idx = board->width * y + x;
-  Cell *selected_cell = get_n_element_in_cell_array(board->board_layout, idx);
+  Cell* selected_cell = get_n_element_in_cell_array(board->board_layout, idx);
 
   if (is_reveal(action)) {
     if (!is_revealed(selected_cell)) {
@@ -159,19 +165,17 @@ void apply_action_on_board(Board *board, Action *action) {
       board->revealed_count += reveal_recursive(board, x, y, true);
     }
   } else if (is_flag(action)) {
-    if (is_revealed(selected_cell))
-      return;
+    if (is_revealed(selected_cell)) return;
     if (!is_flaged(selected_cell)) {
       set_flaged(selected_cell);
-      if (is_bomb(selected_cell))
-        board->correctly_flagged_bombs += 1;
+      if (is_bomb(selected_cell)) board->correctly_flagged_bombs += 1;
     }
   }
 }
 
-bool is_lose_condition(Board *board) { return board->is_lose; }
+bool is_lose_condition(Board* board) { return board->is_lose; }
 
-bool is_win_condition(Board *board) {
+bool is_win_condition(Board* board) {
   const size_t total_cells = board->width * board->height;
   const size_t must_reveal = total_cells - board->bomb_count;
   return must_reveal == board->revealed_count ||
@@ -180,23 +184,21 @@ bool is_win_condition(Board *board) {
               : board->correctly_flagged_bombs == board->bomb_count);
 }
 
-void destroy_board(Board *board) {
+void destroy_board(Board* board) {
   if (board) {
-    if (board->board_layout)
-      free(board->board_layout);
+    if (board->board_layout) free(board->board_layout);
     free(board);
   }
 }
 
-void draw_board(Board *board) {
+void draw_board(Board* board) {
   printf("\nBomb count: %zu.\n", board->bomb_count);
   printf("Flagged bombs: %zu.\n", board->correctly_flagged_bombs);
 
   for (size_t i = 0; i < board->height; ++i) {
     if (i == 0) {
       for (size_t j = 0; j < board->width; ++j) {
-        if (j == 0)
-          printf("\n     ");
+        if (j == 0) printf("\n     ");
 
         printf("%3zu%c", j + 1, j < board->width - 1 ? ' ' : 0);
       }
@@ -207,7 +209,7 @@ void draw_board(Board *board) {
       }
 
       size_t idx = i * board->width + j;
-      Cell *cell = get_n_element_in_cell_array(board->board_layout, idx);
+      Cell* cell = get_n_element_in_cell_array(board->board_layout, idx);
       char c;
       if (is_revealed(cell)) {
         if (get_bomb_neighbours_count(cell) > 0) {
@@ -230,17 +232,16 @@ void draw_board(Board *board) {
   printf("\n");
 }
 
-size_t get_board_width(Board *board) { return board->width; }
+size_t get_board_width(Board* board) { return board->width; }
 
-size_t get_board_height(Board *board) { return board->height; }
+size_t get_board_height(Board* board) { return board->height; }
 
 #ifdef MINESWEEPER_DEBUG
-void draw_board_debug(Board *board) {
+void draw_board_debug(Board* board) {
   for (size_t i = 0; i < board->height; ++i) {
     if (i == 0) {
       for (size_t j = 0; j < board->width; ++j) {
-        if (j == 0)
-          printf("\n     ");
+        if (j == 0) printf("\n     ");
 
         printf("%3zu%c", j + 1, j < board->width - 1 ? ' ' : 0);
       }
@@ -251,7 +252,7 @@ void draw_board_debug(Board *board) {
       }
 
       size_t idx = i * board->width + j;
-      Cell *cell = get_n_element_in_cell_array(board->board_layout, idx);
+      Cell* cell = get_n_element_in_cell_array(board->board_layout, idx);
       char c;
 
       if (is_bomb(cell)) {

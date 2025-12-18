@@ -1,4 +1,5 @@
 #include "input.h"
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,8 +9,8 @@ typedef enum {
   INVALID_ARGUMENTS,
   ALLOCATION_FAILURE,
   FILE_ERROR,
-  END_OF_FILE // EOF already exists, and it could be anything, so we define it
-              // again (with a different name)
+  END_OF_FILE  // EOF already exists, and it could be anything, so we define it
+               // again (with a different name)
 } Error;
 
 size_t next_pow2(size_t value) {
@@ -31,7 +32,7 @@ size_t next_pow2(size_t value) {
 /// @param buffer A pointer to where the pointer to the buffer will be stored
 /// @param size A pointer to the size of the buffer
 /// @return An int (converted from an enum) indicating the success/error value
-int dynamic_buffer_pow_two(char **buffer, size_t *size) {
+int dynamic_buffer_pow_two(char** buffer, size_t* size) {
   if ((buffer == NULL || size == NULL) || (*buffer != NULL && size == 0) ||
       (*buffer == NULL && *size != 0)) {
     return INVALID_ARGUMENTS;
@@ -39,7 +40,7 @@ int dynamic_buffer_pow_two(char **buffer, size_t *size) {
 
   // No need to check size for 0, we checked already
   if (*buffer == NULL) {
-    char *ptr = malloc(1);
+    char* ptr = malloc(1);
     if (ptr == NULL) {
       return ALLOCATION_FAILURE;
     }
@@ -49,10 +50,10 @@ int dynamic_buffer_pow_two(char **buffer, size_t *size) {
   }
 
   size_t new_size = next_pow2(*size);
-  char *ptr = realloc(*buffer, new_size);
+  char* ptr = realloc(*buffer, new_size);
 
   if (ptr == NULL) {
-    char *malloc_ptr = malloc(new_size);
+    char* malloc_ptr = malloc(new_size);
     if (malloc_ptr == NULL) {
       return ALLOCATION_FAILURE;
     }
@@ -72,12 +73,12 @@ int dynamic_buffer_pow_two(char **buffer, size_t *size) {
 /// @param file The file to which the text will be read.
 /// @param target A pointer to a pointer which will point to the result
 /// @return Value that indicates success or an error.
-int read_line_from_file(FILE *file, char **target) {
+int read_line_from_file(FILE* file, char** target) {
   if (file == NULL || target == NULL) {
     return INVALID_ARGUMENTS;
   }
 
-  char *buffer = NULL;
+  char* buffer = NULL;
   size_t buffer_size = 0;
   size_t buffer_used = 0;
 
@@ -114,8 +115,7 @@ int read_line_from_file(FILE *file, char **target) {
     if (buffer_size == buffer_used) {
       int r = dynamic_buffer_pow_two(&buffer, &buffer_size);
       if (r != SUCCESS) {
-        if (buffer != NULL)
-          free(buffer);
+        if (buffer != NULL) free(buffer);
         return r;
       }
     }
@@ -125,21 +125,19 @@ int read_line_from_file(FILE *file, char **target) {
   }
 
   if (error_set) {
-    if (buffer != NULL)
-      free(buffer);
+    if (buffer != NULL) free(buffer);
     return FILE_ERROR;
   }
 
   if (eof_reached && buffer_used == 0) {
     return END_OF_FILE;
-  } // else if(eof_reached && bytes_read > 0) not needed, as we have a valid
-    // string still
+  }  // else if(eof_reached && bytes_read > 0) not needed, as we have a valid
+     // string still
 
   if (buffer_size == buffer_used) {
     int r = dynamic_buffer_pow_two(&buffer, &buffer_size);
     if (r != SUCCESS) {
-      if (buffer)
-        free(buffer);
+      if (buffer) free(buffer);
       return r;
     }
   }
@@ -151,8 +149,8 @@ int read_line_from_file(FILE *file, char **target) {
   return SUCCESS;
 }
 
-char *read_input_from_stdin() {
-  char *str = NULL;
+char* read_input_from_stdin() {
+  char* str = NULL;
   int r = read_line_from_file(stdin, &str);
 
   if (r != SUCCESS) {
@@ -164,7 +162,7 @@ char *read_input_from_stdin() {
 }
 
 size_t read_size_t_stdin() {
-  char *str = read_input_from_stdin();
+  char* str = read_input_from_stdin();
   size_t v;
   char c;
 
