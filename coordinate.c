@@ -1,8 +1,9 @@
 #include "coordinate.h"
 #include <stdlib.h>
+
 struct Coordinate {
-  size_t x;
-  size_t y;
+  size_t x; // The x component of the Coordinate.
+  size_t y; // The y component of the Coordinate.
 };
 
 Coordinate *create_coordinate(size_t x, size_t y) {

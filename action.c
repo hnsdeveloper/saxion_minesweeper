@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 struct Action {
-  Coordinate *coordinate;
-  bool is_flag;
+  Coordinate *coordinate; // A coordinate where such action should be applied
+  bool is_flag; // Whether the action is a flagging action. Note that !is_flag == is_reveal.
 };
 
 Action *create_reveal_action(Coordinate *coordinate) {

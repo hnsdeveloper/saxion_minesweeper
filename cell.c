@@ -4,10 +4,10 @@
 #include <string.h>
 
 struct Cell {
-  size_t bomb_neighbors;
-  bool is_revealed;
-  bool is_flaged;
-  bool is_bomb;
+  size_t bomb_neighbors; // How many neighbors are bombs.
+  bool is_revealed; // Whether the current Cell is revealed or not.
+  bool is_flaged; // Whether the current Cell is flagged or not. Note, being revealed takes priority over flagged, as a Cell can't be both.
+  bool is_bomb; // Whether the current Cell is a bomb.
 };
 
 Cell *create_cell_array(size_t element_count) {

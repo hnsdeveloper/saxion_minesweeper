@@ -7,13 +7,13 @@
 #include <time.h>
 
 struct Board {
-  size_t width;
-  size_t height;
-  size_t bomb_count;
-  size_t correctly_flagged_bombs;
-  size_t revealed_count;
-  Cell *board_layout;
-  bool is_lose;
+  size_t width; // The width of the board.
+  size_t height; // The height of the board.
+  size_t bomb_count; // How many Cells are bombs in the board.
+  size_t correctly_flagged_bombs; // How many Cells have been correctly flagged as bombs.
+  size_t revealed_count; // How many Cells were revealed in total.
+  Cell *board_layout; // An array of Cells with size width * height.
+  bool is_lose; // Boolean stating whether there is a lose condition.
 };
 
 Board *create_board(size_t x, size_t y) {
@@ -120,6 +120,11 @@ void fill_board(Board *board, Action *action) {
       Cell *c = get_n_element_in_cell_array(board->board_layout,
                                             board->width * i + j);
       int r = rand();
+      // To be honest I know nothing of statistics and probability to make a fair distribution of bombs, 
+      // and thus create a fancy code which would allow the user to choose a difficulty.
+      // As such, I tested different parameters for when to place a bomb and found out that increasing the divisor
+      // caused less bombs to be spawned (it makes sense as if you choose a prime number, there will be less numbers
+      // that can be divided by it given the limited range of integers). 3 is a good amount, as 2 spawns to many bombs.
       if (r % 3 == 0) {
         set_bomb(c);
         ++bomb_count;
