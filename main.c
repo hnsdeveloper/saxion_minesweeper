@@ -28,6 +28,13 @@ int main() {
       break;
     }
 
+    if (width > 100 || height > 100) {
+      printf(
+          "Please, provide a width and a height equal to or smaller than 100 "
+          "and bigger than 0.");
+      continue;
+    }
+
     Board* b = create_board(width, height);
     draw_board(b);
     while (!is_lose_condition(b) && !is_win_condition(b)) {
