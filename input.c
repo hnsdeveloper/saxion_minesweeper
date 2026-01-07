@@ -17,6 +17,7 @@ size_t next_pow2(size_t value) {
   size_t i = 1;
   while (i <= value) {
     i = i << 1;
+    if (i == 0) break;
   }
 
   return i;
