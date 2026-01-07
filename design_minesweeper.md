@@ -6,14 +6,14 @@ This document gives the high-level design of a minesweeper game implementation. 
 
 ## Game overview
 
-The game of minesweeper is played on a board of non fixed size, where some spaces (from now on called cells) are empty and some contain bombs. The objective of the game is to either reveal all empty spaces or flag all the bombs. The user only has two different actions in the game, one being revealing a cell, which reveal neighbor cells that are empty and stops when a neighbor cell is a bomb, or flaging. When all empty spaces are revealed or all the bombs are flaged, the game ends with the player winning, otherwise, when the player reveals a spot where there is a bomb, it ends with the player losing. The first user action is always a safe action, thus if the player reveals, it will reveal the cell and all empty ones around. If the player flags, the player will have flagged an empty Cell.
+The game of minesweeper is played on a board of non fixed size, where some spaces (from now on called cells) are empty and some contain bombs. The objective of the game is to either reveal all empty spaces or flag all the bombs. The user only has two different actions in the game, one being revealing a cell, which reveal neighbor cells that are empty and stops when a neighbor cell is a bomb, or flaging. When all empty spaces are revealed or all the bombs are flagged, the game ends with the player winning, otherwise, when the player reveals a spot where there is a bomb, it ends with the player losing. The first user action is always a safe action, thus if the player reveals, it will reveal the cell and all empty ones around. If the player flags, the player will have flagged an empty Cell.
 
 ## Design components
 
 The following "entities" will be used to represent the game state:
 
 - `Board`: Represents the game board, where there are different `Cells`.
-- `Cell` : Represents one of the cells in a board, holding state such as if it is a bomb, if it is revealed, if it is flaged and how many of it neighbors are bombs.
+- `Cell` : Represents one of the cells in a board, holding state such as if it is a bomb, if it is revealed, if it is flagged and how many of it neighbors are bombs.
 - `Action` : Represents an action that will be applied on the board, such as revealing a `Cell` or flaging one.
 - `Coordinate` : Represents a coordinate where an `Action` will be applied.
 
@@ -41,7 +41,7 @@ struct Board {
 struct Cell {
   size_t bomb_neighbors; // How many neighbors are bombs.
   bool is_revealed; // Whether the current Cell is revealed or not.
-  bool is_flaged; // Whether the current Cell is flagged or not. Note, being revealed takes priority over flagged, as a Cell can't be both.
+  bool is_flagged; // Whether the current Cell is flagged or not. Note, being revealed takes priority over flagged, as a Cell can't be both.
   bool is_bomb; // Whether the current Cell is a bomb.
 };
 ```
@@ -194,18 +194,18 @@ bool is_exploded(Cell *c);
 /// @return True if it is revealed, otherwise false.
 bool is_revealed(Cell *c);
 
-/// @brief Sets a Cell as revealed. Revealed has priority over flaged.
+/// @brief Sets a Cell as revealed. Revealed has priority over flagged.
 /// @param c The cell to set.
 void set_revealed(Cell *c);
 
-/// @brief Tells if a Cell is flaged or not.
+/// @brief Tells if a Cell is flagged or not.
 /// @param c The Cell that will be checked.
 /// @return True if it is flagged, otherwise false.
-bool is_flaged(Cell *c);
+bool is_flagged(Cell *c);
 
 /// @brief Sets a Cell as flagged.
 /// @param c The cell to set.
-void set_flaged(Cell *c);
+void set_flagged(Cell *c);
 
 /// @brief Tells if a Cell is a bomb.
 /// @param c The cell to which it will be checked

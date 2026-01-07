@@ -166,8 +166,8 @@ void apply_action_on_board(Board* board, Action* action) {
     }
   } else if (is_flag(action)) {
     if (is_revealed(selected_cell)) return;
-    if (!is_flaged(selected_cell)) {
-      set_flaged(selected_cell);
+    if (!is_flagged(selected_cell)) {
+      set_flagged(selected_cell);
       if (is_bomb(selected_cell)) board->correctly_flagged_bombs += 1;
     }
   }
@@ -220,7 +220,7 @@ void draw_board(Board* board) {
         } else {
           c = 'R';
         }
-      } else if (is_flaged(cell)) {
+      } else if (is_flagged(cell)) {
         c = 'F';
       } else {
         c = 0x20;

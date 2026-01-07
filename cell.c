@@ -7,10 +7,10 @@
 struct Cell {
   size_t bomb_neighbors;  // How many neighbors are bombs.
   bool is_revealed;       // Whether the current Cell is revealed or not.
-  bool is_flaged;  // Whether the current Cell is flagged or not. Note, being
-                   // revealed takes priority over flagged, as a Cell can't be
-                   // both.
-  bool is_bomb;    // Whether the current Cell is a bomb.
+  bool is_flagged;  // Whether the current Cell is flagged or not. Note, being
+                    // revealed takes priority over flagged, as a Cell can't be
+                    // both.
+  bool is_bomb;     // Whether the current Cell is a bomb.
 };
 
 Cell* create_cell_array(size_t element_count) {
@@ -36,13 +36,13 @@ bool is_exploded(Cell* c) { return is_bomb(c) && is_revealed(c); }
 bool is_revealed(Cell* c) { return c->is_revealed; }
 
 void set_revealed(Cell* c) {
-  c->is_flaged = false;
+  c->is_flagged = false;
   c->is_revealed = true;
 }
 
-bool is_flaged(Cell* c) { return c->is_flaged; }
+bool is_flagged(Cell* c) { return c->is_flagged; }
 
-void set_flaged(Cell* c) { c->is_flaged = true; }
+void set_flagged(Cell* c) { c->is_flagged = true; }
 
 bool is_bomb(Cell* c) { return c->is_bomb; }
 

@@ -9,16 +9,11 @@ typedef enum {
   INVALID_ARGUMENTS,
   ALLOCATION_FAILURE,
   FILE_ERROR,
-  END_OF_FILE  // EOF already exists, and it could be anything, so we define it
-               // again (with a different name)
+  END_OF_FILE  // EOF already exists, and it could be anything, so we define
+               // it again (with a different name)
 } Error;
 
 size_t next_pow2(size_t value) {
-  // Wraps around
-  if (value == SIZE_MAX) {
-    return 1;
-  }
-
   size_t i = 1;
   while (i <= value) {
     i = i << 1;
@@ -50,6 +45,7 @@ int dynamic_buffer_pow_two(char** buffer, size_t* size) {
   }
 
   size_t new_size = next_pow2(*size);
+  if (new_size == 0) return ALLOCATION_FAILURE;
   char* ptr = realloc(*buffer, new_size);
 
   if (ptr == NULL) {
@@ -106,8 +102,8 @@ int read_line_from_file(FILE* file, char** target) {
       if (buffer_used > 0) {
         break;
       } else {
-        // We ignore all the new line characters until we read something that is
-        // not a newline character
+        // We ignore all the new line characters until we read something
+        // that is not a newline character
         continue;
       }
     }

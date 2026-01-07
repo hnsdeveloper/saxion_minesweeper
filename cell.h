@@ -27,18 +27,18 @@ bool is_exploded(Cell* c);
 /// @return True if it is revealed, otherwise false.
 bool is_revealed(Cell* c);
 
-/// @brief Sets a Cell as revealed. Revealed has priority over flaged.
+/// @brief Sets a Cell as revealed. Revealed has priority over flagged.
 /// @param c The cell to set.
 void set_revealed(Cell* c);
 
-/// @brief Tells if a Cell is flaged or not.
+/// @brief Tells if a Cell is flagged or not.
 /// @param c The Cell that will be checked.
 /// @return True if it is flagged, otherwise false.
-bool is_flaged(Cell* c);
+bool is_flagged(Cell* c);
 
 /// @brief Sets a Cell as flagged.
 /// @param c The cell to set.
-void set_flaged(Cell* c);
+void set_flagged(Cell* c);
 
 /// @brief Tells if a Cell is a bomb.
 /// @param c The cell to which it will be checked
